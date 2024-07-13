@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 
-const press_Start_2P = Press_Start_2P({ weight: "400", subsets: ["latin"], display: 'swap'});
+const press_Start_2P = Press_Start_2P({ weight: "400", subsets: ["greek"], display: 'swap' });
 
 
 export default function RootLayout({
@@ -29,6 +29,6 @@ export default function RootLayout({
           {children}
         </body>
       </html>
-   </Web3ModalProvider>
+    </Web3ModalProvider>
   );
 }

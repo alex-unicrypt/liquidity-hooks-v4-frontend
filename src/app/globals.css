@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Kurale&display=swap');
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -18,16 +20,34 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
+  background: linear-gradient(to bottom,
       transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+/* Global link styles */
+a {
+  color: #EAEAEA; /* Very light gray (almost white) */
+  text-decoration: none; /* Optional: removes underline */
+}
+
+/* Styles for visited links */
+a:visited {
+  color: #C0C0C0; /* Slightly darker gray for visited links */
+}
+
+/* Styles for hover state */
+a:hover {
+  color: #A0A0A0; /* Medium gray for hover state (darker) */
+  text-decoration: underline; /* Optional: adds underline on hover */
+}
+
+/* Styles for active state (when the link is being clicked) */
+a:active {
+  color: #606060; /* Dark gray for active state */
 }

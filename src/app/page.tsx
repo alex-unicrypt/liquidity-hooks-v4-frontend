@@ -8,9 +8,15 @@ export default function Home() {
     <div className=" items-center  max-w-screen-lg flex mx-auto my-10">
 
       <main className="nes-container title is-centered w-full border-2 rounded-2xl with-title is-rounded">
-        Sticky Hook
-        <div className="items-center flex justify-between p-24">
+        <div className="flex justify-between w-full ">
+          <div>
+            Sticky Hook
+          </div>
+          <ConnectButton></ConnectButton>
 
+        </div>
+
+        <div className="items-center flex justify-between p-24">
 
           <div className="">
 

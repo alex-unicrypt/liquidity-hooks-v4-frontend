@@ -8,6 +8,8 @@ import { createWeb3Modal } from '@web3modal/wagmi/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { State, WagmiProvider } from 'wagmi'
+import { Press_Start_2P } from "next/font/google";
+const press_Start_2P = Press_Start_2P({ weight: "400", subsets: ["latin"], display: 'swap' });
 
 // Setup queryClient
 const queryClient = new QueryClient()
@@ -19,7 +21,16 @@ createWeb3Modal({
   wagmiConfig: config,
   projectId,
   enableAnalytics: true, // Optional - defaults to your Cloud configuration
-  enableOnramp: true // Optional - false as default
+  enableOnramp: true, // Optional - false as default
+
+  themeVariables: {
+    '--w3m-accent': '#111111',
+    '--w3m-font-family': `${press_Start_2P.style.fontFamily}, monospace`,
+    // '--w3m-color-mix': '#000000',
+    '--w3m-color-mix-strength': 40,
+    '--w3m-border-radius-master': '0px',
+
+  }
 })
 
 export default function Web3ModalProvider({

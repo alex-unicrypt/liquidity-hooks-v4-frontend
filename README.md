@@ -2,13 +2,7 @@ Brussels 2024 ETH Global Liquidity Hooks front-end.
 
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
 ```
 
 

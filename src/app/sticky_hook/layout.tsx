@@ -1,10 +1,9 @@
 {/* <ConnectButton /> */ }
 
-
 import type { Metadata } from "next";
 // import { Press_Start_2P } from "next/font/google";
-// import "nes.css/css/nes.min.css"
-// import "./globals.css";
+import "nes.css/css/nes.min.css"
+import "./globals.css";
 import { cookieToInitialState } from 'wagmi'
 import { headers } from 'next/headers'
 
