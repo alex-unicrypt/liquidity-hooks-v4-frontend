@@ -36,10 +36,6 @@ a {
   text-decoration: none; /* Optional: removes underline */
 }
 
-/* Styles for visited links */
-a:visited {
-  color: #C0C0C0; /* Slightly darker gray for visited links */
-}
 
 /* Styles for hover state */
 a:hover {

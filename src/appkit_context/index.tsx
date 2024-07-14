@@ -24,10 +24,12 @@ createWeb3Modal({
   enableOnramp: true, // Optional - false as default
 
   themeVariables: {
-    '--w3m-accent': '#111111',
+    '--w3m-accent': '#CCCCCC',
     '--w3m-font-family': `${press_Start_2P.style.fontFamily}, monospace`,
-    // '--w3m-color-mix': '#000000',
-    '--w3m-color-mix-strength': 40,
+    '--w3m-color-mix': '#AAAAAA',
+    '--w3m-color-mix-strength': 5,
+    '--w3m-font-size-master': '6',
+
     '--w3m-border-radius-master': '0px',
 
   }
