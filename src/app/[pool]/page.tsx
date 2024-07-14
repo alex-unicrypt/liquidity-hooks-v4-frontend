@@ -24,6 +24,10 @@ async function fetchGraphQL() {
     }
     locks {
       id
+      owner {
+      id
+      }
+      unlockDate
     }
   }
 }
@@ -48,29 +52,18 @@ async function fetchGraphQL() {
 }
 
 
-export default async function Home() {
+export default async function Home({
+  params
+}: {
+  params: {
+    pool: string
+  }
+}
+) {
 
-  //   const response = await execute(
-  //     /* GraphQL */ `
-  //       {
-  //   pools {
-  //     id
-  //     # locks {
-  //     #   id
-  //     # }
-  //   }
 
-  // }
-  //     `,
-  //     {},
-  //   )
 
   let data = await fetchGraphQL()
-  // const sdk = getBuiltGraphSDK()
-
-  // try {
-  // let allPools = await sdk.AllPoolsQuery();
-  // rest of your component logic
 
 
   console.log(data);
@@ -101,29 +94,62 @@ export default async function Home() {
                 <tr>
                   <th>Lock ID</th>
                   <th>Owner</th>
-                  <th>Unlock TS</th>
+                  {/* <th>Unlock TS</th> */}
                 </tr>
               </thead>
               <tbody>
-                <tr>
+
+                {
+                  pools.length > 0 && pools.map((pool: any) => {
+
+                    if (pool.id == params.pool) {
+
+                      return pool.locks.map((lock: any) => {
+                        return < tr key={lock.id} >
+                          <td>{lock.id}</td>
+                          <td>{lock.owner.id}</td>
+                          {/* <td>{lock.unlockDate}</td> */}
+                        </tr>
+                      })
+                    }
+
+
+                  })
+                }
+
+              {/* 
+                      <Link
+                        href={`${pool.id}`}
+                        className="is-rounded"
+                        // target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <h2 className="mb-3 w-full text-2xl font-semibold">
+                          {pool.currency0.symbol} /
+                          {pool.currency1.symbol}
+                          <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+                            -&gt;
+                          </span>
+                        </h2>
+                        <p className="m-0 max-w-[30ch] text-sm opacity-50">
+                          {pool.locks.length} Locks
+                        </p>
+                      </Link> */}
+
+              {/* <tr>
                   <td>Thou hast had a good morning</td>
                   <td>Thou hast had a good afternoon</td>
                   <td>Thou hast had a good night</td>
-                </tr>
-                <tr>
-                  <td>Thou hast had a good morning</td>
-                  <td>Thou hast had a good afternoon</td>
-                  <td>Thou hast had a good night</td>
-                </tr>
-              </tbody>
-            </table>
+                </tr> */}
+            </tbody>
+          </table>
 
-            {
-              pools.length > 0 && pools.map((pool: any) => {
+          {
+            pools.length > 0 && pools.map((pool: any) => {
 
-                return <div key={pool.id}>
+              return <div key={pool.id}>
 
-                  {/* <div
+                {/* <div
                     // href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
                     className="nes-container is-rounded px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
                     // target="_blank"
@@ -140,16 +166,16 @@ export default async function Home() {
                       {pool.locks.length} Locks
                     </p>
                   </div> */}
-                </div>
-              })
-            }
+              </div>
+            })
+          }
 
 
-          </div>
         </div>
-
       </div>
-    </main>
+
+    </div>
+    </main >
   );
   // } catch (error) {
   // console.error('Error fetching pools:', error);
