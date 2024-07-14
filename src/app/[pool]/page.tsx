@@ -5,6 +5,10 @@ import ConnectButton from "@/components/connect-button";
 import Link from "next/link";
 
 
+export const revalidate = 0
+export const dynamic = 'force-dynamic'
+
+
 async function fetchGraphQL() {
   const query = `
     {

@@ -6,6 +6,8 @@ import Link from "next/link";
 
 import { AllPoolsQueryQuery, getBuiltGraphSDK } from '../../.graphclient'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 import { execute } from '../../.graphclient'
 async function fetchGraphQL() {
   const query = `
@@ -75,9 +77,10 @@ export default async function Home() {
   // rest of your component logic
 
 
-  console.log(data);
   let pools = data.data.pools
 
+  console.log(pools);
+  
   return (
     <main className=" items-center max-w-screen-lg mx-auto my-10 rounded-2xl with-title is-rounded">
 
