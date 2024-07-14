@@ -58,7 +58,7 @@ export default function CreatePage() {
   // })
 
   const simulateCreatePool = useSimulateContract({
-    address: '0x5Fb13F64b79AE7bC88b863797Cc27f2C5a9555cF' as `0x${string}`, // TODO: change into a map of ABIs
+    address: '0x9206a06620Cd141c546B454a5B0e53b0152aA41e' as `0x${string}`, // TODO: change into a map of ABIs
     abi: rugStopFactoryAbi,
     functionName: 'initializePool',
     args: [getTokenA as `0x${string}`, getTokenB as `0x${string}`, getPercentage],
