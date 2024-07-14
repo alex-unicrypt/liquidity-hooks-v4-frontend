@@ -1,0 +1,8 @@
+sources:
+  - name: univ4-locker
+    handler:
+      graphql:
+        endpoint: https://api.studio.thegraph.com/query/64359/univ4-locker/v0.0.5
+
+documents:
+  - ./src/queries/all-pools.graphql
