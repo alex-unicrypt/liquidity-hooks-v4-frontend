@@ -14,9 +14,9 @@ export default function CreatePage() {
 
 
   return (
-    <div className="items-center max-w-screen-lg flex mx-auto my-10">
+    <div className="">
 
-      <main className="rounded-2xl with-title is-rounded">
+      <main className=" items-center max-w-screen-lg mx-auto my-10 rounded-2xl with-title is-rounded">
 
         {/* Heading */}
         <div className="flex mb-4 justify-between w-full ">
@@ -29,13 +29,13 @@ export default function CreatePage() {
         <div className="mb-8">
           <div className=" text-sm">
             <div className="mt-8 mb-4 text-gray-400">Token A</div>
-            <div className="nes-container is-rounded w-fit max-w-screen-md">
+            <div className="nes-container is-rounded">
               0x5Fb13F64b79AE7bC88b863797Cc27f2C5a9555cF
             </div>
           </div>
           <div className=" text-sm">
             <div className="mt-8 mb-4 text-gray-400">Token B</div>
-            <div className="nes-container is-rounded w-fit max-w-screen-md">
+            <div className="nes-container is-rounded">
               0x5Fb13F64b79AE7bC88b863797Cc27f2C5a9555cF
             </div>
           </div>
@@ -55,9 +55,6 @@ export default function CreatePage() {
             <div className="ml-4">{getPercentage}%</div>
           </div>
         </div>
-{/* <button type="button" className="nes-btn is-success">
-                Button
-              </button> */}
         <button disabled={true} type="button" className={`nes-btn ${true ? 'is-disabled' : 'is-success'}`}>Submit</button>
       </main>
     </div>
