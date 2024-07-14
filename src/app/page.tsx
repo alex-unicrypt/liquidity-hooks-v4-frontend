@@ -4,81 +4,133 @@ import Image from "next/image";
 import ConnectButton from "@/components/connect-button";
 import Link from "next/link";
 
-export default function Home() {
+import { AllPoolsQueryQuery, getBuiltGraphSDK } from '../../.graphclient'
+
+import { execute } from '../../.graphclient'
+async function fetchGraphQL() {
+  const query = `
+    {
+  pools {
+    id
+    currency0 {
+      id
+      decimals
+      name
+      symbol
+    }
+    currency1 {
+      id
+      decimals
+      name
+      symbol
+    }
+    locks {
+      id
+    }
+  }
+}
+  `;
+
+  const response = await fetch('https://api.studio.thegraph.com/query/64359/univ4-locker/v0.0.5', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify({ query })
+  });
+
+  if (!response.ok) {
+    const message = `An error has occurred: ${response.statusText}`;
+    throw new Error(message);
+  }
+
+  const data = await response.json();
+  return data;
+}
+
+
+export default async function Home() {
+
+  //   const response = await execute(
+  //     /* GraphQL */ `
+  //       {
+  //   pools {
+  //     id
+  //     # locks {
+  //     #   id
+  //     # }
+  //   }
+
+  // }
+  //     `,
+  //     {},
+  //   )
+
+  let data = await fetchGraphQL()
+  // const sdk = getBuiltGraphSDK()
+
+  // try {
+  // let allPools = await sdk.AllPoolsQuery();
+  // rest of your component logic
+
+
+  console.log(data);
+  let pools = data.data.pools
+
   return (
-    <div className="items-center max-w-screen-lg flex mx-auto my-10">
-      <div className="items-center flex justify-between p-24">
-        <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-2 lg:text-left">
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className="mb-3 text-2xl font-semibold">
-              Docs{" "}
-              <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-                -&gt;
-              </span>
-            </h2>
-            <p className="m-0 max-w-[30ch] text-sm opacity-50">
-              Find in-depth information about Next.js features and API.
-            </p>
-          </a>
+    <main className=" items-center max-w-screen-lg mx-auto my-10 rounded-2xl with-title is-rounded">
 
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className="mb-3 text-2xl font-semibold">
-              Learn{" "}
-              <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-                -&gt;
-              </span>
-            </h2>
-            <p className="m-0 max-w-[30ch] text-sm opacity-50">
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className="mb-3 text-2xl font-semibold">
-              Templates{" "}
-              <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-                -&gt;
-              </span>
-            </h2>
-            <p className="m-0 max-w-[30ch] text-sm opacity-50">
-              Explore starter templates for Next.js.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className="mb-3 text-2xl font-semibold">
-              Deploy{" "}
-              <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-                -&gt;
-              </span>
-            </h2>
-            <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-              Instantly deploy your Next.js site to a shareable URL with Vercel.
-            </p>
-          </a>
+      {/* Heading */}
+      <div className="flex mb-4 justify-between w-full ">
+        <div className=" text-xl">
+          Latest Pools
         </div>
       </div>
+      <div className="items-center flex mx-auto my-10">
 
-    </div>
+        <div className="items-center flex justify-between p-8">
+
+
+          <div className="mb-32 gap-8 grid text-center lg:mb-0 lg:w-full lg:grid-cols-3 lg:text-left">
+
+
+            {
+              pools.length > 0 && pools.map((pool: any) => {
+
+                return <div key={pool.id}>
+
+                  <div
+                    // href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+                    className="nes-container is-rounded px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
+                    // target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <h2 className="mb-3 w-full text-2xl font-semibold">
+                      {pool.currency0.symbol} /
+                      {pool.currency1.symbol}
+                      <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+                        -&gt;
+                      </span>
+                    </h2>
+                    <p className="m-0 max-w-[30ch] text-sm opacity-50">
+                      {pool.locks.length} Locks
+                    </p>
+                  </div>
+                </div>
+              })
+            }
+
+
+          </div>
+        </div>
+
+      </div>
+    </main>
   );
+  // } catch (error) {
+  // console.error('Error fetching pools:', error);
+  // Handle the error appropriately
+  // }
+
 }

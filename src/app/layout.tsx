@@ -34,7 +34,7 @@ export default function RootLayout({
               {/* Heading */}
               <div className="flex mb-4 justify-between w-full ">
                 <div className=" text-xl">
-                  🪝 Sticky Hook
+                  🪝 RugStop Factory
                 </div>
                 <ConnectButton />
               </div>
@@ -45,7 +45,7 @@ export default function RootLayout({
               <div className="text-left text-sm">
                 <div className="mt-8 mb-4 text-gray-400">Address</div>
                 <div className="nes-container is-rounded w-fit max-w-screen-md">
-                  0x5Fb13F64b79AE7bC88b863797Cc27f2C5a9555cF
+                  0x9206a06620Cd141c546B454a5B0e53b0152aA41e
                 </div>
                 {/* Bio */}
                 <div className="mt-8 mb-4 text-gray-400">What am I?</div>

@@ -4,7 +4,7 @@ import Image from "next/image";
 import ConnectButton from "@/components/connect-button";
 import Link from "next/link";
 import { Slider } from "@/components/ui/slider"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   useAccount,
   useBalance,
@@ -14,18 +14,16 @@ import {
   useSwitchChain,
   useWaitForTransactionReceipt,
 } from 'wagmi'
+
 import { useRouter } from "next/navigation";
 import { formatUnits } from 'viem'
 
-import { erc20Abi } from '@/abis/erc20Abi'
-import { rugStopFactoryAbi } from '@/abis/rugStopFactoryAbi'
-
 // ABIs
+import { erc20Abi } from '@/abis/erc20Abi'
+import { rugStopFactoryAbi } from '@/abis/rugStopPoolFactoryAbi'
+
 
 export default function CreatePage() {
-
-
-  // let liquidityFee = Number(props.feeData.tokenFee) / 10
 
   const [getPercentage, setPercentage] = useState<number>(0)
   const [getTokenA, setTokenA] = useState<string>('')
@@ -70,20 +68,21 @@ export default function CreatePage() {
   const { data: createPoolHash, writeContract: createPoolWriteContract } = useWriteContract()
 
   const waitForPoolCreate = useWaitForTransactionReceipt({
-    confirmations: 2,
+    confirmations: 1,
     hash: createPoolHash,
   })
-  // onSuccess(data) {
-  //   lockerAllowance.refetch()
-  //   prepareApproveIncrement.refetch()
-  //   // router.refresh()
-  //   // document.getElementById('my_modal_2')!.showModal()
 
 
+  // useEffect(() => {
+
+  //   if (waitForPoolCreate.isSuccess) {
+
+  //   }
+
+  // }, [waitForPoolCreate.isSuccess])
 
 
-
-  const canProceed = getTokenA !== '' && getTokenB !== ''
+  const canProceed = getTokenA !== '' && getTokenB !== '' && !simulateCreatePool.isError && !simulateCreatePool.isLoading
 
   return (
     <div className="">
@@ -135,7 +134,6 @@ export default function CreatePage() {
 
 
         <div className="pb-8">
-
           {
             simulateCreatePool.isError ?
               <div>
@@ -146,7 +144,7 @@ export default function CreatePage() {
         </div>
 
         <div>
-          <button onClick={() => { simulateCreatePool && simulateCreatePool.data && createPoolWriteContract(simulateCreatePool.data.request) }} disabled={!canProceed} type="button" className={`nes-btn ${!canProceed ? 'is-disabled' : 'is-success'}`}>{waitForPoolCreate.isLoading ? 'Loading...' : 'Submit'}</button>
+          <button onClick={() => { simulateCreatePool && simulateCreatePool.data && createPoolWriteContract(simulateCreatePool.data.request) }} disabled={!canProceed} type="button" className={`nes-btn ${!canProceed ? 'is-disabled' : 'is-success'}`}>{waitForPoolCreate.isLoading ? 'Loading...' : waitForPoolCreate.isSuccess ? 'Success!' : 'Submit'}</button>
         </div>
       </main>
     </div>

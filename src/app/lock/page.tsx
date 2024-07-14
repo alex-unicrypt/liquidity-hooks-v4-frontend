@@ -1,84 +1,205 @@
-
+'use client'
 
 import Image from "next/image";
 import ConnectButton from "@/components/connect-button";
 import Link from "next/link";
+import { Slider } from "@/components/ui/slider"
+import { useEffect, useState } from "react";
+import {
+  useAccount,
+  useBalance,
+  useReadContract,
+  useWriteContract,
+  useSimulateContract,
+  useSwitchChain,
+  useWaitForTransactionReceipt,
+} from 'wagmi'
 
-export default function Create() {
+import { useRouter } from "next/navigation";
+import { formatUnits } from 'viem'
+
+// ABIs
+import { erc20Abi } from '@/abis/erc20Abi'
+import { rugStopFactoryAbi } from '@/abis/rugStopPoolFactoryAbi'
+
+
+export default function LockPage() {
+
+  const [getPercentage, setPercentage] = useState<number>(0)
+  const [getTokenA, setTokenA] = useState<string>('')
+  const [getTokenB, setTokenB] = useState<string>('')
+
+  const { address, chain } = useAccount()
+  const router = useRouter()
+
+  // const [getAddressState, setAddressState] = useState<string | undefined>()
+
+  const userBalanceTokenA = useBalance({
+    address: address as `0x${string}`, token: getTokenA as `0x${string}`, query: { enabled: getTokenA.length === 42 }
+  })
+
+  const userBalanceTokenB = useBalance({
+    address: address as `0x${string}`, token: getTokenB as `0x${string}`, query: { enabled: getTokenB.length === 42 }
+  })
+
+
+  // const hookAllowanceA = useReadContract({
+  //   address: getTokenA as `0x${string}`, abi: erc20ABI,
+  //   functionName: 'allowance',
+  //   chainId: Number(chain),
+  //   args: [address as `0x${string}`, "0x5Fb13F64b79AE7bC88b863797Cc27f2C5a9555cF" as `0x${string}`],
+  // })
+
+  // const hookAllowanceB = useReadContract({
+  //   address: getTokenB as `0x${string}`, abi: erc20ABI,
+  //   functionName: 'allowance',
+  //   chainId: Number(chain),
+  //   args: [address as `0x${string}`, "0x5Fb13F64b79AE7bC88b863797Cc27f2C5a9555cF" as `0x${string}`],
+  // })
+
+  const simulateCreatePool = useSimulateContract({
+    address: '0x5Fb13F64b79AE7bC88b863797Cc27f2C5a9555cF' as `0x${string}`, // TODO: change into a map of ABIs
+    abi: rugStopFactoryAbi,
+    functionName: 'initializePool',
+    args: [getTokenA as `0x${string}`, getTokenB as `0x${string}`, getPercentage],
+  })
+
+
+  const { data: createPoolHash, writeContract: createPoolWriteContract } = useWriteContract()
+
+  const waitForPoolCreate = useWaitForTransactionReceipt({
+    confirmations: 1,
+    hash: createPoolHash,
+  })
+
+
+  // useEffect(() => {
+
+  //   if (waitForPoolCreate.isSuccess) {
+
+  //   }
+
+  // }, [waitForPoolCreate.isSuccess])
+
+
+  const canProceed = getTokenA !== '' && getTokenB !== '' && !simulateCreatePool.isError && !simulateCreatePool.isLoading
+
   return (
-    <div className="items-center max-w-screen-lg flex mx-auto my-10">
-      <div className="items-center flex justify-between p-24">
-        {/* <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-2 lg:text-left">
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className="mb-3 text-2xl font-semibold">
-              Docs{" "}
-              <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-                -&gt;
-              </span>
-            </h2>
-            <p className="m-0 max-w-[30ch] text-sm opacity-50">
-              Find in-depth information about Next.js features and API.
-            </p>
-          </a>
+    <div className="">
 
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className="mb-3 text-2xl font-semibold">
-              Learn{" "}
-              <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-                -&gt;
-              </span>
-            </h2>
-            <p className="m-0 max-w-[30ch] text-sm opacity-50">
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
+      <main className=" items-center max-w-screen-lg mx-auto my-10 rounded-2xl with-title is-rounded">
 
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className="mb-3 text-2xl font-semibold">
-              Templates{" "}
-              <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-                -&gt;
-              </span>
-            </h2>
-            <p className="m-0 max-w-[30ch] text-sm opacity-50">
-              Explore starter templates for Next.js.
-            </p>
-          </a>
+        {/* Heading */}
+        <div className="flex mb-4 mt-8 justify-between w-full ">
+          <div className=" text-xl">
+            Lock
+          </div>
+        </div>
 
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className="mb-3 text-2xl font-semibold">
-              Deploy{" "}
-              <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-                -&gt;
-              </span>
-            </h2>
-            <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-              Instantly deploy your Next.js site to a shareable URL with Vercel.
-            </p>
-          </a>
+        {/* clipboard */}
+        <div className="mb-8">
+          <div className=" text-sm">
+            <div className="mt-8 mb-4 text-gray-400">Token A</div>
+            <input value={getTokenA} onChange={(e) => setTokenA(e.target.value)} type="text" placeholder="0x..." className="nes-input bg-black is-rounded" />
+          </div>
+
+          <div className="text-sm mt-2 text-gray-600">
+            {userBalanceTokenA.data ? userBalanceTokenA.data?.value.toString() : 'Enter a token address'}
+          </div>
+
+          <div className=" text-sm">
+            <div className="mt-8 mb-4 text-gray-400">Token B</div>
+            <input value={getTokenB} onChange={(e) => setTokenB(e.target.value)} type="text" placeholder="0x..." className="nes-input bg-black is-rounded" />
+          </div>
+          <div className="text-sm mt-2 text-gray-600">
+            {userBalanceTokenB.data ? userBalanceTokenB.data?.value.toString() : 'Enter a token address'}
+          </div>
+
+        </div>
+
+        <div className="pb-8">
+          {
+            simulateCreatePool.isError ?
+              <div>
+                <div>{simulateCreatePool.error.name}</div>
+                <div>{simulateCreatePool.error.message}</div>
+              </div> : simulateCreatePool.isLoading ? 'Simulating...' : 'Simulation Passed'
+          }
+        </div>
+
+        <div>
+          <button onClick={() => { simulateCreatePool && simulateCreatePool.data && createPoolWriteContract(simulateCreatePool.data.request) }} disabled={!canProceed} type="button" className={`nes-btn ${!canProceed ? 'is-disabled' : 'is-success'}`}>{waitForPoolCreate.isLoading ? 'Loading...' : waitForPoolCreate.isSuccess ? 'Success!' : 'Submit'}</button>
+        </div>
+
+
+        {/* TEST */}
+        {/* <div className="flex mb-4 justify-between w-full ">
+          <div className=" text-xl">
+            Drain
+          </div>
         </div> */}
-      </div>
 
+
+        {/* TEST RELOCK */}
+        <div className="flex mb-4 justify-between w-full ">
+          <div className=" text-xl">
+            Relock
+          </div>
+        </div>
+
+        {/* clipboard */}
+        <div className="mb-8">
+          {/* <div className=" text-sm">
+            <div className="mt-8 mb-4 text-gray-400">Token A</div>
+            <input value={getTokenA} onChange={(e) => setTokenA(e.target.value)} type="text" placeholder="0x..." className="nes-input bg-black is-rounded" />
+          </div> */}
+          <div className="pb-8">
+            <div className="mt-8 mb-4 text-gray-400">Days</div>
+            <div className="flex justify-between">
+              <Slider
+                defaultValue={[0]}
+                max={365}
+                step={1}
+                onValueChange={(e: [number]) => {
+                  setPercentage(e[0])
+                }}
+              />
+              {/* <div className="ml-4">{getPercentage}%</div> */}
+            </div>
+          </div>
+          <div className="text-sm mt-2 text-gray-600">
+            {`Relocking for ${'100'} days`}
+          </div>
+
+
+          <div className="pb-8">
+            {
+              simulateCreatePool.isError ?
+                <div>
+                  <div>{simulateCreatePool.error.name}</div>
+                  <div>{simulateCreatePool.error.message}</div>
+                </div> : simulateCreatePool.isLoading ? 'Simulating...' : 'Simulation Passed'
+            }
+          </div>
+
+          <div>
+            <button onClick={() => { simulateCreatePool && simulateCreatePool.data && createPoolWriteContract(simulateCreatePool.data.request) }} disabled={!canProceed} type="button" className={`nes-btn ${!canProceed ? 'is-disabled' : 'is-success'}`}>{waitForPoolCreate.isLoading ? 'Loading...' : waitForPoolCreate.isSuccess ? 'Success!' : 'Submit'}</button>
+          </div>
+          {/* <div className=" text-sm">
+            <div className="mt-8 mb-4 text-gray-400">Token B</div>
+            <input value={getTokenB} onChange={(e) => setTokenB(e.target.value)} type="text" placeholder="0x..." className="nes-input bg-black is-rounded" />
+          </div>
+          <div className="text-sm mt-2 text-gray-600">
+            {userBalanceTokenB.data ? userBalanceTokenB.data?.value.toString() : 'Enter a token address'}
+          </div> */}
+
+        </div>
+
+
+
+
+
+      </main>
     </div>
   );
 }

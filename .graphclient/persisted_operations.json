@@ -1,0 +1,3 @@
+{
+  "c994e3335d6029d99bf4420848016cff81394a83201f22db6a651a730ac52eff": "query AllPoolsQuery {\n  pools {\n    id\n  }\n}"
+}
