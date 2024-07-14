@@ -4,9 +4,7 @@ import Image from "next/image";
 import ConnectButton from "@/components/connect-button";
 import Link from "next/link";
 
-import { AllPoolsQueryQuery, getBuiltGraphSDK } from '../../.graphclient'
 
-import { execute } from '../../.graphclient'
 async function fetchGraphQL() {
   const query = `
     {
@@ -92,17 +90,42 @@ export default async function Home() {
         <div className="items-center flex justify-between p-8">
 
 
-          <div className="mb-32 gap-8 grid text-center lg:mb-0 lg:w-full lg:grid-cols-3 lg:text-left">
+          <div className="mb-32 ">
 
+
+
+            <table className="nes-table bg-black ${tableClasses}"
+            //  style={"margin:15px 4px 5px 4px"}
+            >
+              <thead>
+                <tr>
+                  <th>Lock ID</th>
+                  <th>Owner</th>
+                  <th>Unlock TS</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Thou hast had a good morning</td>
+                  <td>Thou hast had a good afternoon</td>
+                  <td>Thou hast had a good night</td>
+                </tr>
+                <tr>
+                  <td>Thou hast had a good morning</td>
+                  <td>Thou hast had a good afternoon</td>
+                  <td>Thou hast had a good night</td>
+                </tr>
+              </tbody>
+            </table>
 
             {
               pools.length > 0 && pools.map((pool: any) => {
 
                 return <div key={pool.id}>
 
-                  <Link
-                    href={`${pool.id}`}
-                    className="is-rounded"
+                  {/* <div
+                    // href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+                    className="nes-container is-rounded px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
                     // target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -116,7 +139,7 @@ export default async function Home() {
                     <p className="m-0 max-w-[30ch] text-sm opacity-50">
                       {pool.locks.length} Locks
                     </p>
-                  </Link>
+                  </div> */}
                 </div>
               })
             }
@@ -134,3 +157,5 @@ export default async function Home() {
   // }
 
 }
+
+

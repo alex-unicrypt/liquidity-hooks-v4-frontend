@@ -66,49 +66,20 @@ export default function RootLayout({
               <div className="mt-12 flex gap-8 underline">
                 <Link scroll={false} href={'/'} className="nes-btn">Pool Dashboard
 
-
-                  {/* <div>
-                  shows latest pools in real time
-                  </div>
-                  <div>
-                    dive into the pool to view the participants
-                  </div> */}
                 </Link>
 
                 <Link scroll={false} href={'/create'} className="nes-btn">Create a Pool
 
-                  {/* <div>
-                  make an ENMT
-                  </div>
-                  <div>
-                    swap UNCX for ETH
-                  </div> */}
                 </Link>
 
                 <Link scroll={false} href={'/lock'} className="nes-btn">Manage Lock
-                  {/* 
-                  <div>
-                    Increase
-                    </div>
-                    <div>
-                    Withdraw
-                    </div>
-                    <div>
-                      Relock
-                    </div> 
-                  */}
+
 
                 </Link>
               </div>
 
               {children}
 
-              {/* <button type="button" className="nes-btn is-success">
-                Button
-              </button> */}
-              {/* <button type="button" className="nes-btn is-warning">
-                Button
-              </button> */}
             </div>
           </main>
         </body>
