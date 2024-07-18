@@ -72,6 +72,9 @@ importers:
       eslint-config-next:
         specifier: 14.2.5
         version: 14.2.5(eslint@8.57.0)(typescript@5.5.3)
+      graphql:
+        specifier: ^16.8.1
+        version: 16.9.0
       postcss:
         specifier: ^8
         version: 8.4.39

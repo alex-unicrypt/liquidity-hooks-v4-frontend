@@ -92,7 +92,7 @@ export default function LockPage() {
         {/* Heading */}
         <div className="flex mb-4 mt-8 justify-between w-full ">
           <div className=" text-xl">
-            Lock
+            Increase LP
           </div>
         </div>
 

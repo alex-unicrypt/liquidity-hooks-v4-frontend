@@ -3903,7 +3903,7 @@ const merger = new(BareMerger as any)({
         store: rootStore.child('bareMerger')
       })
 const documentHashMap = {
-        "c994e3335d6029d99bf4420848016cff81394a83201f22db6a651a730ac52eff": AllPoolsQueryDocument
+        "456aa60ce6b893c3f40cced72b9a2f397df70b53fa70904eadbe753237b94c86": AllPoolsQueryDocument
       }
 additionalEnvelopPlugins.push(usePersistedOperations({
         getPersistedOperation(key) {
@@ -3930,7 +3930,7 @@ additionalEnvelopPlugins.push(usePersistedOperations({
           return printWithCache(AllPoolsQueryDocument);
         },
         location: 'AllPoolsQueryDocument.graphql',
-        sha256Hash: 'c994e3335d6029d99bf4420848016cff81394a83201f22db6a651a730ac52eff'
+        sha256Hash: '456aa60ce6b893c3f40cced72b9a2f397df70b53fa70904eadbe753237b94c86'
       }
     ];
     },
@@ -3988,13 +3988,19 @@ export function getBuiltGraphSDK<TGlobalContext = any, TOperationContext = any>(
 export type AllPoolsQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllPoolsQueryQuery = { pools: Array<Pick<Pool, 'id'>> };
+export type AllPoolsQueryQuery = { pools: Array<(
+    Pick<Pool, 'id'>
+    & { locks: Array<Pick<Lock, 'id'>> }
+  )> };
 
 
 export const AllPoolsQueryDocument = gql`
     query AllPoolsQuery {
   pools {
     id
+    locks {
+      id
+    }
   }
 }
     ` as unknown as DocumentNode<AllPoolsQueryQuery, AllPoolsQueryQueryVariables>;

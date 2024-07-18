@@ -1,9 +1,8 @@
 query AllPoolsQuery {
   pools {
     id
-    # locks {
-    #   id
-    # }
+    locks {
+      id
+    }
   }
-
 }

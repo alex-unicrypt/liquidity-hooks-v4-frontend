@@ -5,10 +5,12 @@ import ConnectButton from "@/components/connect-button";
 import Link from "next/link";
 
 import { AllPoolsQueryQuery, getBuiltGraphSDK } from '../../.graphclient'
-
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
 import { execute } from '../../.graphclient'
+
+//  MMMMMUST ---
+export const revalidate = 0
+// export const dynamic = 'force-dynamic'
+
 async function fetchGraphQL() {
   const query = `
     {
@@ -70,17 +72,19 @@ export default async function Home() {
   //   )
 
   let data = await fetchGraphQL()
-  // const sdk = getBuiltGraphSDK()
+  const sdk = getBuiltGraphSDK()
 
-  // try {
   // let allPools = await sdk.AllPoolsQuery();
-  // rest of your component logic
 
+  let q: AllPoolsQueryQuery 
+
+  // q.pools[0].id
+
+  // console.log(allPools, ' allPools');
+  
 
   let pools = data.data.pools
 
-  console.log(pools);
-  
   return (
     <main className=" items-center max-w-screen-lg mx-auto my-10 rounded-2xl with-title is-rounded">
 
